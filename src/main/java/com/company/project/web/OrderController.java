@@ -137,7 +137,7 @@ public class OrderController {
         order.setOrderState(orderState);
         order.setToken(token);
         int result = orderService.updateOrder(order);
-        //System.out.println(result);
+        System.out.println(result);
         if (result == 1) {
             return ResultGenerator.genSuccessResult("成功邀请，待确认");
         } else {
