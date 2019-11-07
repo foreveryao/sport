@@ -13,6 +13,9 @@ public class WxUser {
     //用户编号
     @Column(name = "userNo")
     private String userNo;
+    //用户的学号
+    @Column(name = "number")
+    private String number;
     //开放id
     @Id
     @Column(name = "openId")
@@ -32,9 +35,10 @@ public class WxUser {
     public WxUser() {
 
     }
-    public WxUser(String moblie,String userNo,String openId,String sessionKey,String unionId,String loginTime) {
+    public WxUser(String moblie,String userNo,String number,String openId,String sessionKey,String unionId,String loginTime) {
         this.moblie=moblie;
         this.userNo=userNo;
+        this.number=number;
         this.openId=openId;
         this.sessionKey=sessionKey;
         this.unionId=unionId;
@@ -60,6 +64,13 @@ public class WxUser {
     }
     public void setUnionId(String unionId) {
         this.unionId = unionId;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+    public void setNumber(String number) {
+        this.number = number;
     }
 
     public Long getId() {

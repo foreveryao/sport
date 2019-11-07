@@ -50,7 +50,7 @@ public class WxController {
      * @return
      */
     @PostMapping("/login")
-    public Result wxLogin(@RequestParam String code) throws NullPointerException {
+    public Result wxLogin(@RequestParam String code,String number) throws NullPointerException {
 
         //System.out.println(code+"--------------------");
         String WX_URL = "https://api.weixin.qq.com/sns/jscode2session?" +
@@ -91,8 +91,6 @@ public class WxController {
         }
         return ResultGenerator.genFailResult("登录错误");
     }
-
-
 
     /**
      * 保存用户信息
