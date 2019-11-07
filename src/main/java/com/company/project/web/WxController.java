@@ -93,6 +93,7 @@ public class WxController {
     }
 
 
+
     /**
      * 保存用户信息
      * @param encryptedData
