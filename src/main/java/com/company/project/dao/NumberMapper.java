@@ -1,10 +1,10 @@
 package com.company.project.dao;
 
-import com.company.project.model.WxUser;
+import com.company.project.model.number;
 import org.apache.ibatis.annotations.*;
 import com.company.project.core.Mapper;
 
 
-public interface WxMapper extends Mapper<WxUser>{
+public interface NumberMapper extends Mapper<number>{
         
 }

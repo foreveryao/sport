@@ -4,8 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.company.project.core.*;
 import com.company.project.model.WxUser;
+import com.company.project.model.number;
 import com.company.project.model.Token;
 import com.company.project.service.WxService;
+import com.company.project.service.NumberService;
 import com.company.project.common.*;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +52,7 @@ public class WxController {
      * @return
      */
     @PostMapping("/login")
-    public Result wxLogin(@RequestParam String code,String number) throws NullPointerException {
+    public Result wxLogin(@RequestParam String code,String number1) throws NullPointerException {
 
         //System.out.println(code+"--------------------");
         String WX_URL = "https://api.weixin.qq.com/sns/jscode2session?" +
@@ -65,18 +67,26 @@ public class WxController {
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         WxUser wx = new WxUser();
+        number num=new number();
         wx.setOpenId((String) jsonObject.get("openid"));
         wx.setToken((String) jsonObject.get("session_key"));
         wx.setLoginTime(df.format(new Date()));
+        num.setId(number1);
         //token令牌
         Token t = new Token();
         t.setToken(wx.getToken());
         t.setOpenId(wx.getOpenId());
         //用户未注册则插入数据到数据库
         if (WxService.findById(wx.getOpenId()) == null && wx.getOpenId() != null) {
+            if(NumberService.findById(num.getId())==null) {
+                return ResultGenerator.genFailResult("学号不存在");
+            }
             WxService.save(wx);
             return ResultGenerator.genSuccessResult(t);
         } else if (WxService.findById(wx.getOpenId()) != null) {
+            if(NumberService.findById(num.getId())==null) {
+                return ResultGenerator.genFailResult("学号不存在");
+            }
             WxUser wxUser = WxService.findById(wx.getOpenId());
             //WxUser wxUser =new WxUser();
             t.setToken(wxUser.getToken());
