@@ -29,6 +29,7 @@ public class WxController {
     private Logger logger = LoggerFactory.getLogger(UserController.class);
     @Autowired
     private WxService WxService;
+    private NumberService numberService;
 
     /**
      * code登录（版本1.0）
@@ -78,13 +79,13 @@ public class WxController {
         t.setOpenId(wx.getOpenId());
         //用户未注册则插入数据到数据库
         if (WxService.findById(wx.getOpenId()) == null && wx.getOpenId() != null) {
-            if(NumberService.findById(num.getId())==null) {
+            if(numberService.findById(num.getId())==null) {
                 return ResultGenerator.genFailResult("学号不存在");
             }
             WxService.save(wx);
             return ResultGenerator.genSuccessResult(t);
         } else if (WxService.findById(wx.getOpenId()) != null) {
-            if(NumberService.findById(num.getId())==null) {
+            if(numberService.findById(num.getId())==null) {
                 return ResultGenerator.genFailResult("学号不存在");
             }
             WxUser wxUser = WxService.findById(wx.getOpenId());

@@ -1,7 +1,7 @@
-package com.company.project.web;
+package com.company.project.web.message;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
+//import com.alibaba.fastjson.JSONObject;
 import com.company.project.core.*;
 import com.company.project.model.WxUser;
 import com.company.project.model.number;
@@ -9,6 +9,7 @@ import com.company.project.model.Token;
 import com.company.project.service.WxService;
 import com.company.project.service.NumberService;
 import com.company.project.common.*;
+import org.json.JSONException;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+// 使用旧版本 base64 编解码实现增强兼容性
 import sun.misc.BASE64Encoder;
 
 import java.io.UnsupportedEncodingException;
@@ -29,12 +31,6 @@ import java.util.zip.Deflater;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import org.json.JSONObject;
-
-import javax.servlet.http.HttpServletRequest;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 public class MessageController {
     private long sdkappid;
@@ -69,7 +65,7 @@ public class MessageController {
         }
     }
 
-    private String genSig(String identifier, long expire, byte[] userbuf) {
+    private String genSig(String identifier, long expire, byte[] userbuf) throws JSONException {
 
         long currTime = System.currentTimeMillis()/1000;
 
@@ -100,16 +96,11 @@ public class MessageController {
                 0, compressedBytesLength)))).replaceAll("\\s*", "");
     }
 
-    public String genSig(String identifier, long expire) {
+    public String genSig(String identifier, long expire) throws JSONException {
         return genSig(identifier, expire, null);
     }
 
-    public String genSigWithUserBuf(String identifier, long expire, byte[] userbuf) {
+    public String genSigWithUserBuf(String identifier, long expire, byte[] userbuf) throws JSONException {
         return genSig(identifier, expire, userbuf);
-    }
-
-    @PostMapping("/message")
-    public Result message(@RequestParam String openId,String url) throws NullPointerException {
-        
     }
 }

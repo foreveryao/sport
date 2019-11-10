@@ -6,25 +6,25 @@ import javax.persistence.Id;
 public class number {
     //学号
     @Id
-    @Column(name = "id")
+    @Column(name = "studentID")
     private String id;
     //该学号学生名字
-    @Column(name = "name")
+    @Column(name = "Name")
     private String name;
     //该学号学生班级
     @Column(name = "class")
-    private String class;
+    private String classNum;
     //绑定学号的微信id
-    @Column(name = "openId")
+    @Column(name = "openID")
     private String openId;
 
     public number() {
 
     }
-    public number(String id,String name,String class,String openId) {
+    public number(String id,String name,String classNum,String openId) {
         this.id=id;
         this.name=name;
-        this.class=class;
+        this.classNum=classNum;
         this.openId=openId;
     }
 
@@ -42,11 +42,11 @@ public class number {
         this.name=name;
     }
 
-    public String getClass() {
-        return class;
+    public String getClassNum() {
+        return classNum;
     }
-    public void setClass(String class) {
-        this.class=class;
+    public void setClassNum(String classNum) {
+        this.classNum=classNum;
     }
 
     public String getOpendId() {

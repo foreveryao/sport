@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.company.project.dao.NumberMapper" >
+    <resultMap id="BaseResultMap" type="com.company.project.model.number" >
+        <id column="student_id" property="studentID" jdbcType="VARCHAR" />
+        <result column="wx_openId" property="openID" jdbcType="VARCHAR" />
+        <result column="name" property="Name" jdbcType="VARCHAR" />
+        <result column="class" property="class" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <select id="selectUserByOpenId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        select *
+        from studentid
+        where wx_openid = #{orderState,jdbcType=VARCHAR}
+    </select>
+
+    <insert id="insertUser" parameterType="com.company.project.model.WxUser" >
+    insert into wx_user
+    (wx_openid,token,wx_no,last_date)
+    values (#{OpenId,jdbcType=VARCHAR}, #{Token,jdbcType=VARCHAR}, #{WxNo,jdbcType=VARCHAR},
+    #{Time,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateUserInfoById" parameterType="com.company.project.model.WxUser" >
+        update wx_user
+        set token = #{Token,jdbcType=VARCHAR},
+            wx_no = #{WxNo,jdbcType=VARCHAR},
+            last_date = #{Time,jdbcType=VARCHAR},
+        where wx_openid = #{OpenId,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateSessionKeyByOpenId" parameterType="java.lang.String" >
+        update wx_user
+        set sessionKey = #{SessionKey,jdbcType=VARCHAR}
+        where openId = #{OpenId,jdbcType=VARCHAR}
+    </update>
+
+</mapper>
