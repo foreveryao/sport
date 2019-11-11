@@ -8,11 +8,11 @@ public class WxUser {
     @Column(name = "id")
     private Long id;
     //手机号
-    @Column(name = "moblie")
-    private String moblie;
+    @Column(name = "url")
+    private String url;
     //用户编号
-    @Column(name = "userNo")
-    private String userNo;
+    @Column(name = "weixinId")
+    private String weixinId;
     //用户的学号
     @Column(name = "number")
     private String number;
@@ -35,9 +35,9 @@ public class WxUser {
     public WxUser() {
 
     }
-    public WxUser(String moblie,String userNo,String number,String openId,String sessionKey,String unionId,String loginTime) {
-        this.moblie=moblie;
-        this.userNo=userNo;
+    public WxUser(String url,String weixinId,String number,String openId,String sessionKey,String unionId,String loginTime) {
+        this.url=url;
+        this.weixinId=weixinId;
         this.number=number;
         this.openId=openId;
         this.sessionKey=sessionKey;
@@ -80,18 +80,18 @@ public class WxUser {
         this.id = id;
     }
 
-    public String getMoblie() {
-        return moblie;
+    public String getUrl() {
+        return url;
     }
-    public void setMoblie(String mobile) {
-        this.moblie = mobile;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
-    public String getUserNo() {
-        return userNo;
+    public String getWeixinId() {
+        return weixinId;
     }
-    public void setUserNo(String userNo) {
-        this.userNo = userNo;
+    public void setWeixinId(String weixinId) {
+        this.weixinId = weixinId;
     }
 
     public String getLoginTime() {

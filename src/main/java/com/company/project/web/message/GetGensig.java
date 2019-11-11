@@ -1,42 +1,23 @@
 package com.company.project.web.message;
 
-import com.alibaba.fastjson.JSON;
-//import com.alibaba.fastjson.JSONObject;
-import com.company.project.core.*;
-import com.company.project.model.WxUser;
-import com.company.project.model.number;
-import com.company.project.model.Token;
-import com.company.project.service.WxService;
-import com.company.project.service.NumberService;
-import com.company.project.common.*;
 import org.json.JSONException;
-import org.slf4j.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-// 使用旧版本 base64 编解码实现增强兼容性
+import org.json.JSONObject;
 import sun.misc.BASE64Encoder;
-
-import java.io.UnsupportedEncodingException;
-import java.security.*;
-import java.nio.charset.Charset;
-
-import java.util.Arrays;
-import java.util.zip.Deflater;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import org.json.JSONObject;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
+import java.util.zip.Deflater;
 
-public class MessageController {
+public class GetGensig {
     private long sdkappid;
     private String key;
 
-    public MessageController(long sdkappid, String key) {
+    public GetGensig(long sdkappid, String key) {
         this.sdkappid = sdkappid;
         this.key = key;
     }
