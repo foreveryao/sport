@@ -27,6 +27,8 @@ public class Player {
     private String token;
     @Column(name = "formId")
     private String formId;
+    @Column(name = "form2Id")
+    private String form2Id;
 
     public Player() {
 
@@ -46,7 +48,6 @@ public class Player {
     public Integer getOrderId() {
         return orderId;
     }
-
     public void setOrderId(Integer orderId) {
         this.orderId = orderId;
     }
@@ -54,7 +55,6 @@ public class Player {
     public String getOpenId() {
         return openId;
     }
-
     public void setOpenId(String openId) {
         this.openId = openId;
     }
@@ -62,7 +62,6 @@ public class Player {
     public String getWeiXinId() {
         return weiXinId;
     }
-
     public void setWeiXinId(String weiXinId) {
         this.weiXinId = weiXinId;
     }
@@ -70,7 +69,6 @@ public class Player {
     public String getWeiXin2Id() {
         return weiXin2Id;
     }
-
     public void setWeiXin2Id(String weiXin2Id) {
         this.weiXin2Id = weiXin2Id;
     }
@@ -78,7 +76,6 @@ public class Player {
     public int getOrderState() {
         return orderState;
     }
-
     public void setOrderState(int orderState) {
         this.orderState = orderState;
     }
@@ -86,7 +83,6 @@ public class Player {
     public String getMyTeamName() {
         return myTeamName;
     }
-
     public void setMyTeamName(String myTeamName) {
         this.myTeamName = myTeamName;
     }
@@ -94,7 +90,6 @@ public class Player {
     public String getTeamName() {
         return teamName;
     }
-
     public void setTeamName(String teamName) {
         this.teamName = teamName;
     }
@@ -102,7 +97,6 @@ public class Player {
     public String getTime() {
         return time;
     }
-
     public void setTime(String time) {
         this.time = time;
     }
@@ -110,7 +104,6 @@ public class Player {
     public String getToken() {
         return token;
     }
-
     public void setToken(String token) {
         this.token = token;
     }
@@ -118,8 +111,14 @@ public class Player {
     public String getFormId() {
         return formId;
     }
-
     public void setFormId(String formId) {
         this.formId = formId;
+    }
+
+    public String getForm2Id() {
+        return form2Id;
+    }
+    public void setForm2Id(String form2Id) {
+        this.form2Id = form2Id;
     }
 }
