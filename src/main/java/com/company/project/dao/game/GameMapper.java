@@ -7,14 +7,12 @@ import com.company.project.model.game.Player;
 public interface GameMapper{
     //添加游戏信息
     int insert(Player player);
-    //添加游戏信息（如果存在空值就跳过该属性）
-    int insertSelective(Player player);
     //通过编号来删除游戏信息，这是撤销接口的逻辑
     int deleteByPlayerId(Integer orderId);
     //根据编号找到该游戏信息
     Player selectByID(Integer orderId);
-    //根据状态筛选数据库的约场信息
-    List<Player> selectByState(Integer orderState);
+    //根据信息状态筛选数据库的约场信息
+    List<Player> selectByOrderState(Integer orderState);
     //获取全部的约场信息
     List<Player> getAllPlayers();
     //根据ID更新约场信息

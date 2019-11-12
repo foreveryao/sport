@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.company.project.dao.GameMapper">
+    <resultMap id="BaseResultMap" type="com.company.project.model.game.Player">
+        <id column="order_id" property="orderId" jdbcType="INTEGER"/>
+        <result column="open_id" property="openId" jdbcType="VARCHAR"/>
+        <result column="weixin_id" property="weiXinId" jdbcType="VARCHAR"/>
+        <result column="weixin2_id" property="weiXin2Id" jdbcType="VARCHAR"/>
+        <result column="order_state" property="orderState" jdbcType="INTEGER"/>
+        <result column="game_state" property="gameState" jdbcType="INTEGER"/>
+        <result column="myteam_name" property="myTeamName" jdbcType="VARCHAR"/>
+        <result column="team_name" property="teamName" jdbcType="VARCHAR"/>
+        <result column="time" property="time" jdbcType="VARCHAR"/>
+        <result column="formId" property="formId" jdbcType="VARCHAR"/>
+        <result column="form2Id" property="form2Id" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="game">
+        order_id,open_id,weinxin_id,weixin2_id,order_state,game_state,myteam_name,team_name,time
+    </sql>
+
+    <insert id="insert" parameterType="com.company.project.dao.game.GameMapper">
+        insert into game
+        (order_id, open_id, weixin_id, weixin2_id, order_state , game_state , myteam_name, team_name, time, formId , form2Id)
+        values (#{orderId,jdbcType=INTEGER}, #{openId,jdbcType=VARCHAR}, #{weiXinId,jdbcType=VARCHAR},
+                #{weiXin2Id,jdbcType=VARCHAR},
+                #{orderState,jdbcType=INTEGER}, #{gameState,jdbcType=VARCHAR},
+                #{myTeamName,jdbcType=VARCHAR},#{teamName,jdbcType=VARCHAR}, 
+                #{time,jdbcType=VARCHAR},#{formId,jdbcType=VARCHAR},
+                #{form2Id,jdbcType=VARCHAR})
+
+    </insert>
+
+    <delete id="deleteByOrderId" parameterType="java.lang.Integer">
+        delete
+        from game
+        where order_id = #{orderId,jdbcType=INTEGER}
+          and order_state = 0
+    </delete>
+
+    <select id="selectByID" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select *
+        from game
+        where order_id = #{orderId,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectByOrderState" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select *
+        from game
+        where order_state = #{orderState,jdbcType=INTEGER}
+    </select>
+
+    <select id="getAllOrder" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select *
+        from game
+    </select>
+
+    <update id="updateByID" parameterType="com.company.project.dao.game.GameMapper">
+        update game
+        set open_id      = #{openId,jdbcType=VARCHAR},
+            weixin_id   = #{weiXinId,jdbcType=VARCHAR},
+            weixin2_id  = #{weiXin2Id,jdbcType=VARCHAR},
+            order_state = #{orderState,jdbcType=INTEGER},
+            game_state = #{gameState,jdbcType=INTEGER},
+            myteam_name = #{myTeamName,jdbcType=VARCHAR},
+            team_name   = #{teamName,jdbcType=VARCHAR},
+            time        = #{time,jdbcType=VARCHAR},
+            formId        = #{formId,jdbcType=VARCHAR},
+            form2Id        = #{form2Id,jdbcType=VARCHAR},
+        where order_id = #{orderId,jdbcType=INTEGER}
+    </update>
+<!-- 完成对对方微信，信息状态，对方队伍名和微信Token值的更新，前提是在待邀请状态，应用于同意邀请后的信息更新-->
+    <update id="updateByIDSelective" parameterType="com.company.project.dao.game.GameMapper">
+        update game
+        <set>
+            <!--        <if test="openId != null" >-->
+            <!--            openId = #{openId,jdbcType=VARCHAR},-->
+            <!--        </if>-->
+            <!--        <if test="weiXinId != null" >-->
+            <!--            weixin_id = #{weiXinId,jdbcType=VARCHAR},-->
+            <!--        </if>-->
+            <if test="weiXin2Id != null">
+                weixin2_id = #{weiXin2Id,jdbcType=VARCHAR},
+            </if>
+            <if test="orderState != null">
+                order_state = #{orderState,jdbcType=INTEGER},
+            </if>
+            <!--        <if test="myTeamName != null" >-->
+            <!--            myteam_name = #{myTeamName,jdbcType=VARCHAR},-->
+            <!--        </if>-->
+            <if test="teamName != null">
+                team_name = #{teamName,jdbcType=VARCHAR},
+            </if>
+            <if test="token != null">
+                token = #{token,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where order_id = #{orderId,jdbcType=INTEGER}
+        and order_state = 0
+    </update>
+<!--完成对信息状态和推送值的更新，应用于对方邀请时，信息的更新 -->
+    <update id="updateByIDSelectiveOfSate" parameterType="com.company.project.dao.OrderMapper">
+        update game
+        <set>
+            <if test="orderState != null">
+                order_state = #{orderState,jdbcType=INTEGER},
+            </if>
+            <if test="formId != null">
+                formId = #{formId,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where order_id = #{orderId,jdbcType=INTEGER}
+    </update>
+
+    <select id="getStateByID" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+        select order_state
+        from game
+        where order_id = #{orderId,jdbcType=INTEGER}
+    </select>
+
+    <select id="getTimeById" resultType="java.lang.String" parameterType="java.lang.Integer">
+        select time
+        from game
+        where order_id = #{orderId,jdbcType=INTEGER}
+    </select>
+
+</mapper>
