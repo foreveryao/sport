@@ -1,5 +1,6 @@
 package com.company.project.model;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import javax.persistence.*;
 
@@ -25,6 +26,8 @@ public class Order {
     private String token;
     @Column(name = "formId")
     private String formId;
+    @Column(name = "time_to_state")
+    private Timestamp time_to_state;
 
     public Order() {
 
@@ -118,5 +121,13 @@ public class Order {
 
     public void setFormId(String formId) {
         this.formId = formId;
+    }
+
+    public Timestamp getTime_to_state() {
+        return time_to_state;
+    }
+
+    public void setTime_to_state(Timestamp time_to_state) {
+        this.time_to_state = time_to_state;
     }
 }

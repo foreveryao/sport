@@ -23,7 +23,7 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public Integer updateGameOrderOfSate(Order order) {
+    public Integer updateGameOrderOfSate(Player order) {
         return gameMapper.updateByIDSelectiveOfSate(order);
     }
 
@@ -37,25 +37,25 @@ public class GameServiceImpl implements GameService {
         return gameMapper.deleteByPlayerId(orderId);
     }
 
-    public List<Order> getOtherGameOrder() {
+    public List<Player> getOtherGameOrder() {
         // TODO Auto-generated method stub
-        List<Order> res;
-        res = this.gameMapper.selectByState(0);
-        res.addAll(0, this.gameMapper.selectByState(1));
+        List<Player> res;
+        res = this.gameMapper.selectByOrderState(0);
+        res.addAll(0, this.gameMapper.selectByOrderState(1));
         return res;
     }
 
-    public List<Order> getMyGameOrder() {
+    public List<Player> getMyGameOrder() {
         // TODO Auto-generated method stub
-        return this.gameMapper.selectByState(2);
+        return this.gameMapper.selectByOrderState(2);
     }
 
-    public List<Order> getAll() {
+    public List<Player> getAll() {
         return this.gameMapper.getAllPlayers();
     }
 
     @Override
-    public Order selectByID(Integer orderId) {
+    public Player selectByID(Integer orderId) {
         return gameMapper.selectByID(orderId);
     }
 

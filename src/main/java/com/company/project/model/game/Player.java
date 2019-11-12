@@ -2,6 +2,7 @@ package com.company.project.model.game;
 
 import java.util.Date;
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 public class Player {
     @Id
@@ -23,6 +24,8 @@ public class Player {
     private String teamName;
     @Column(name = "time")
     private String time;
+    @Column(name = "time_to_state")
+    private Timestamp timeToState;
     @Column(name = "token")
     private String token;
     @Column(name = "formId")
@@ -106,6 +109,13 @@ public class Player {
     }
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public Timestamp getTimeToState() {
+        return timeToState;
+    }
+    public void setTimeToState(Timestamp timeToState) {
+        this.timeToState=timeToState;
     }
 
     public String getToken() {

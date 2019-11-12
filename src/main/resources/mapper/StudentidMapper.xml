@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.company.project.dao.StudentidMapper">
+  <resultMap id="BaseResultMap" type="com.company.project.model.Studentid">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="studentID" jdbcType="VARCHAR" property="studentid" />
+    <result column="openID" jdbcType="VARCHAR" property="openid" />
+    <result column="Name" jdbcType="VARCHAR" property="name" />
+    <result column="class" jdbcType="VARCHAR" property="class" />
+  </resultMap>
+</mapper>

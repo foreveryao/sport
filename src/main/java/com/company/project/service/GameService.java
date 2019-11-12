@@ -52,21 +52,21 @@ public interface GameService {
      *
      * @return list
      */
-    List<Order> getOtherGameOrder();
+    List<Player> getOtherGameOrder();
 
     /**
      * 获取我的发起信息接口
      *
      * @return list
      */
-    List<Order> getMyGameOrder();
+    List<Player> getMyGameOrder();
 
     /**
      * 获取全部信息
      *
      * @return list
      */
-    List<Order> getAll();
+    List<Player> getAll();
 
     /**
      * 根据order_id查询到当前的order
@@ -74,5 +74,5 @@ public interface GameService {
      * @param orderId
      * @return
      */
-    Order selectByID(Integer orderId);
+    Player selectByID(Integer orderId);
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,7 +22,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/game")
-public class OrderController {
+public class GameController {
     @Resource
     private GameService gameService;
     private Player player = new Player();
@@ -60,11 +61,11 @@ public class OrderController {
         player.setTeamName(team2);
         player.setTime(timeTmp);
         player.setFormId(formId);
-        player.setTime_to_state(Timestamp.valueOf(time1 + time2 + ":00"));
+        player.setTimeToState(Timestamp.valueOf(time1 + time2 + ":00"));
         Timestamp t = new Timestamp(System.currentTimeMillis());
         //返回false说明时间小于当前时间，返回true说明时间大于当前时间
-        if (t.compareTo(player.getTime_to_state()) < 0) {
-            gameService.addOrder(player);
+        if (t.compareTo(player.getTimeToState()) < 0) {
+            gameService.addGameOrder(player);
             list.add(player);
             return ResultGenerator.genSuccessResult(list);
         } else {
@@ -74,7 +75,7 @@ public class OrderController {
 
     @RequestMapping("showAll")
     @ResponseBody
-    public List<Order> showAllGameOrder(HttpServletRequest request, Model model) {
+    public List<Player> showAllGameOrder(HttpServletRequest request, Model model) {
         return gameService.getAll();
     }
 
@@ -149,7 +150,7 @@ public class OrderController {
         player.setOrderState(orderState);
         player.setGameState(gameState);
         player.setToken(token);
-        int result = gameService.updateGameOrder(order);
+        int result = gameService.updateGameOrder(player);
         System.out.println(result);
         if (result == 1) {
             return ResultGenerator.genSuccessResult("成功邀请，待确认");
@@ -215,7 +216,7 @@ public class OrderController {
     @ResponseBody
     public Result isSure(HttpServletRequest request, Model model) {
         int id = Integer.parseInt(request.getParameter("id"));
-        int state = orderService.getOrderStateById(id);
+        int state = gameService.getGameOrderStateById(id);
         return ResultGenerator.genSuccessResult(state);
     }
 }

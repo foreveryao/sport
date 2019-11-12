@@ -4,10 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.company.project.core.*;
 import com.company.project.model.WxUser;
-import com.company.project.model.number;
+import com.company.project.model.Studentid;
 import com.company.project.model.Token;
 import com.company.project.service.WxService;
-import com.company.project.service.NumberService;
+import com.company.project.service.StudentidService;
 import com.company.project.common.*;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class WxController {
     private Logger logger = LoggerFactory.getLogger(UserController.class);
     @Autowired
     private WxService WxService;
-    private NumberService numberService;
+    private StudentidService numberService;
 
     /**
      * code登录（版本1.0）
@@ -68,33 +68,33 @@ public class WxController {
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         WxUser wx = new WxUser();
-        number num=new number();
+        Studentid num=new Studentid();
         wx.setOpenId((String) jsonObject.get("openid"));
         wx.setToken((String) jsonObject.get("session_key"));
         wx.setLoginTime(df.format(new Date()));
-        num.setId(number1);
+        num.setStudentid(number1);
         //token令牌
         Token t = new Token();
         t.setToken(wx.getToken());
         t.setOpenId(wx.getOpenId());
         //用户未注册则插入数据到数据库
         if (WxService.findById(wx.getOpenId()) == null && wx.getOpenId() != null) {
-            if(numberService.findById(num.getId())==null) {
+            if(numberService.findById(num.getStudentid())==null) {
                 return ResultGenerator.genFailResult("学号不存在");
             }
-            num.setOpenId(wx.getOpenId());
+            num.setOpenid(wx.getOpenId());
             numberService.save(num);
             WxService.save(wx);
             return ResultGenerator.genSuccessResult(t);
         } else if (WxService.findById(wx.getOpenId()) != null) {
-            if(numberService.findById(num.getId())==null) {
+            if(numberService.findById(num.getStudentid())==null) {
                 return ResultGenerator.genFailResult("学号不存在");
             }
             WxUser wxUser = WxService.findById(wx.getOpenId());
             if(wxUser.getNumber()!=null) {
                 return ResultGenerator.genFailResult("用户已经绑定学号");
             }
-            num.setOpenId(wxUser.getOpenId());
+            num.setOpenid(wxUser.getOpenId());
             //WxUser wxUser =new WxUser();
             t.setToken(wxUser.getToken());
             //判断令牌失效时间期限为15天
