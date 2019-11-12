@@ -24,6 +24,7 @@ import java.util.List;
 public class OrderController {
     @Resource
     private OrderService orderService;
+    private Order order = new Order();
 
     /**
      * 发起约场
@@ -35,9 +36,7 @@ public class OrderController {
     @RequestMapping("addOrder")
     @ResponseBody
     public Result addOrder(HttpServletRequest request) throws ParseException {
-        Order order = new Order();
         List<Order> list = orderService.getMyOrder();
-//        int id = Integer.parseInt(request.getParameter("id"));
         String openId = request.getParameter("openId");
         String weiXinId = request.getParameter("weixinId");
         String weiXin2Id = request.getParameter("weixin2Id");
@@ -46,8 +45,9 @@ public class OrderController {
         String team2 = request.getParameter("teamName");
         String timeTmp = request.getParameter("time");
         String formId = request.getParameter("formId");
-        //Date time = new Date();
-//        order.setOrderId(id);
+        String time1 = timeTmp.substring(0, timeTmp.indexOf('日')).replace("年", "-")
+                .replace("月", "-") + " ";
+        String time2 = timeTmp.substring(timeTmp.length() - 5);
         order.setOpenId(openId);
         order.setWeiXinId(weiXinId);
         order.setWeiXin2Id(weiXin2Id);
@@ -56,9 +56,16 @@ public class OrderController {
         order.setTeamName(team2);
         order.setTime(timeTmp);
         order.setFormId(formId);
-        orderService.addOrder(order);
-        list.add(order);
-        return ResultGenerator.genSuccessResult(list);
+        order.setTime_to_state(Timestamp.valueOf(time1 + time2 + ":00"));
+        Timestamp t = new Timestamp(System.currentTimeMillis());
+        //返回false说明时间小于当前时间，返回true说明时间大于当前时间
+        if (t.compareTo(order.getTime_to_state()) < 0) {
+            orderService.addOrder(order);
+            list.add(order);
+            return ResultGenerator.genSuccessResult(list);
+        } else {
+            return ResultGenerator.genFailResult("所选时间不能小于当前时间");
+        }
     }
 
     @RequestMapping("showAll")

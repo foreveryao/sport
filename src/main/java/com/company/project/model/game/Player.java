@@ -80,6 +80,13 @@ public class Player {
         this.orderState = orderState;
     }
 
+    public int getGameState() {
+        return gameState;
+    }
+    public void setGameState(int gameState) {
+        this.gameState=gameState;
+    }
+
     public String getMyTeamName() {
         return myTeamName;
     }
