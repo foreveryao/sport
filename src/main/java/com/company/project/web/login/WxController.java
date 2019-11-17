@@ -75,13 +75,13 @@ public class WxController {
         num.setStudentid(number1);
         //token令牌
         Token t = new Token();
-        t.setToken(wx.getToken());
-        t.setOpenId(wx.getOpenId());
         //用户未注册则插入数据到数据库
         if (WxService.findById(wx.getOpenId()) == null && wx.getOpenId() != null) {
             if (numberService.findById(num.getStudentid()) == null) {
                 return ResultGenerator.genFailResult("学号不存在");
             }
+            t.setToken(wx.getToken());
+            t.setOpenId(wx.getOpenId());
             num.setOpenid(wx.getOpenId());
             System.out.println(num.getOpenid());
             numberService.updateOrder(num);
