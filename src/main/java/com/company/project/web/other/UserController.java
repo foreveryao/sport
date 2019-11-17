@@ -1,4 +1,4 @@
-package com.company.project.web;
+package com.company.project.web.other;
 import com.company.project.core.Result;
 import com.company.project.core.ResultGenerator;
 import com.company.project.model.User;

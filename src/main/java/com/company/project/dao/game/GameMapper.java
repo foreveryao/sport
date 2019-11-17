@@ -9,6 +9,7 @@ public interface GameMapper{
     int insert(Player player);
     //通过编号来删除游戏信息，这是撤销接口的逻辑
     int deleteByPlayerId(Integer orderId);
+    int deleteByPlayerIds(Integer orderId);
     //根据编号找到该游戏信息
     Player selectByID(Integer orderId);
     //根据信息状态筛选数据库的约场信息

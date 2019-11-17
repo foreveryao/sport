@@ -28,7 +28,10 @@ public class Order {
     private String formId;
     @Column(name = "time_to_state")
     private Timestamp time_to_state;
-
+    @Column(name = "remarks")
+    private String remarks;
+    @Column(name = "remarks_other")
+    private String remarks_other;
     public Order() {
 
     }
@@ -41,6 +44,13 @@ public class Order {
         this.myTeamName = myTeamName;
         this.teamName = teamName;
         this.time = time;
+    }
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
     }
 
     public Integer getOrderId() {
@@ -129,5 +139,13 @@ public class Order {
 
     public void setTime_to_state(Timestamp time_to_state) {
         this.time_to_state = time_to_state;
+    }
+
+    public String getRemarks_other() {
+        return remarks_other;
+    }
+
+    public void setRemarks_other(String remarks_other) {
+        this.remarks_other = remarks_other;
     }
 }

@@ -22,6 +22,7 @@ public interface GameService {
     /**
      * 更新约场信息
      * 即更新状态
+     *
      * @param player 约场信息
      */
     Integer updateGameOrderOfSate(Player player);
@@ -39,6 +40,13 @@ public interface GameService {
      * @param orderId 约场信息
      */
     Integer deleteGameOrder(Integer orderId);
+
+    /**
+     * 删除信息（已失效）
+     *
+     * @param orderId 约场信息
+     */
+    Integer deleteGameOrders(Integer orderId);
 
     /**
      * 获取时间接口

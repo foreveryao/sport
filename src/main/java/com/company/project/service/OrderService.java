@@ -31,7 +31,7 @@ public interface OrderService {
      *
      * @param orderId 约场信息
      */
-    Integer getOrderStateById(int orderId);
+    Order getOrderStateById(int orderId);
 
     /**
      * 删除约场信息（撤销接口）

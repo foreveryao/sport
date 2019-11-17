@@ -25,13 +25,33 @@ public class Player {
     @Column(name = "time")
     private String time;
     @Column(name = "time_to_state")
-    private Timestamp timeToState;
+    private Timestamp time_to_state;
     @Column(name = "token")
     private String token;
     @Column(name = "formId")
     private String formId;
     @Column(name = "form2Id")
     private String form2Id;
+    @Column(name = "remarks")
+    private String remarks;
+    @Column(name = "remarks_other")
+    private String remarks_other;
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public String getRemarks_other() {
+        return remarks_other;
+    }
+
+    public void setRemarks_other(String remarks_other) {
+        this.remarks_other = remarks_other;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
 
     public Player() {
 
@@ -112,10 +132,10 @@ public class Player {
     }
 
     public Timestamp getTimeToState() {
-        return timeToState;
+        return time_to_state;
     }
     public void setTimeToState(Timestamp timeToState) {
-        this.timeToState=timeToState;
+        this.time_to_state=timeToState;
     }
 
     public String getToken() {

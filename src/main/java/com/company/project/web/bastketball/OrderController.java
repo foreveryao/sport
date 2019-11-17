@@ -1,4 +1,4 @@
-package com.company.project.web;
+package com.company.project.web.bastketball;
 
 import com.company.project.core.Result;
 import com.company.project.core.ResultGenerator;
@@ -46,6 +46,7 @@ public class OrderController {
         String team2 = request.getParameter("teamName");
         String timeTmp = request.getParameter("time");
         String formId = request.getParameter("formId");
+        String remarks = request.getParameter("remarks");
         String time1 = timeTmp.substring(0, timeTmp.indexOf('日')).replace("年", "-")
                 .replace("月", "-") + " ";
         String time2 = timeTmp.substring(timeTmp.length() - 5);
@@ -57,6 +58,7 @@ public class OrderController {
         order.setTeamName(team2);
         order.setTime(timeTmp);
         order.setFormId(formId);
+        order.setRemarks(remarks);
         order.setTime_to_state(Timestamp.valueOf(time1 + time2 + ":00"));
         Timestamp t = new Timestamp(System.currentTimeMillis());
         //返回false说明时间小于当前时间，返回true说明时间大于当前时间
@@ -140,10 +142,12 @@ public class OrderController {
         String team2 = request.getParameter("teamName");
         int orderState = Integer.parseInt(request.getParameter("orderState"));
         String token = request.getParameter("token");
+        String remarksother = request.getParameter("remarks_other");
         order.setWeiXin2Id(weiXin2Id);
         order.setTeamName(team2);
         order.setOrderState(orderState);
         order.setToken(token);
+        order.setRemarks_other(remarksother);
         int result = orderService.updateOrder(order);
         System.out.println(result);
         if (result == 1) {
@@ -210,7 +214,25 @@ public class OrderController {
     @ResponseBody
     public Result isSure(HttpServletRequest request, Model model) {
         int id = Integer.parseInt(request.getParameter("id"));
-        int state = orderService.getOrderStateById(id);
-        return ResultGenerator.genSuccessResult(state);
+        Order order = orderService.selectByID(id);
+        return ResultGenerator.genSuccessResult(order);
+    }
+    /**
+     * 已失效删除接口
+     *
+     * @param request
+     * @param model
+     * @return
+     */
+    @RequestMapping("delInvalid")
+    @ResponseBody
+    public Result delOrderbyID(HttpServletRequest request, Model model) {
+        int id = Integer.parseInt(request.getParameter("id"));
+        int result = orderService.deleteOrder(id);
+        if (result == 1) {
+            return ResultGenerator.genSuccessResult("删除成功");
+        } else {
+            return ResultGenerator.genFailResult("删除失败");
+        }
     }
 }

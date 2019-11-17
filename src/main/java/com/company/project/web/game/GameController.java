@@ -2,6 +2,7 @@ package com.company.project.web.game;
 
 import com.company.project.core.Result;
 import com.company.project.core.ResultGenerator;
+import com.company.project.model.Order;
 import com.company.project.model.game.Player;
 import com.company.project.service.GameService;
 import com.github.pagehelper.PageHelper;
@@ -47,6 +48,7 @@ public class GameController {
         String team2 = request.getParameter("teamName");
         String timeTmp = request.getParameter("time");
         String formId = request.getParameter("formId");
+        String remarks = request.getParameter("remarks");
         //截取时间的年月日，并改成****-**-**的格式
         String time1 = timeTmp.substring(0, timeTmp.indexOf('日')).replace("年", "-")
                 .replace("月", "-") + " ";
@@ -61,6 +63,7 @@ public class GameController {
         player.setTeamName(team2);
         player.setTime(timeTmp);
         player.setFormId(formId);
+        player.setRemarks(remarks);
         player.setTimeToState(Timestamp.valueOf(time1 + time2 + ":00"));
         Timestamp t = new Timestamp(System.currentTimeMillis());
         //返回false说明时间小于当前时间，返回true说明时间大于当前时间
@@ -139,17 +142,18 @@ public class GameController {
     @ResponseBody
     public Result inviteOrder(HttpServletRequest request, Model model) {
         int id = Integer.parseInt(request.getParameter("id"));
+        System.out.println(id+"===========");
         Player player = gameService.selectByID(id);
         String weiXin2Id = request.getParameter("weixin2Id");
         String team2 = request.getParameter("teamName");
         int orderState = Integer.parseInt(request.getParameter("orderState"));
-        int gameState = Integer.parseInt(request.getParameter("gameState"));
         String token = request.getParameter("token");
+        String remarksother = request.getParameter("remarks_other");
         player.setWeiXin2Id(weiXin2Id);
         player.setTeamName(team2);
         player.setOrderState(orderState);
-        player.setGameState(gameState);
         player.setToken(token);
+        player.setRemarks_other(remarksother);
         int result = gameService.updateGameOrder(player);
         System.out.println(result);
         if (result == 1) {
@@ -188,7 +192,7 @@ public class GameController {
 
 
     /**
-     * 邀请撤销接口
+     * 撤销接口
      *
      * @param request
      * @param model
@@ -216,7 +220,27 @@ public class GameController {
     @ResponseBody
     public Result isSure(HttpServletRequest request, Model model) {
         int id = Integer.parseInt(request.getParameter("id"));
-        int state = gameService.getGameOrderStateById(id);
-        return ResultGenerator.genSuccessResult(state);
+        Player player = gameService.selectByID(id);
+        return ResultGenerator.genSuccessResult(player);
     }
+
+    /**
+     * 已失效删除接口
+     *
+     * @param request
+     * @param model
+     * @return
+     */
+    @RequestMapping("delInvalid")
+    @ResponseBody
+    public Result delOrderbyID(HttpServletRequest request, Model model) {
+        int id = Integer.parseInt(request.getParameter("id"));
+        int result = gameService.deleteGameOrders(id);
+        if (result == 1) {
+            return ResultGenerator.genSuccessResult("删除成功");
+        } else {
+            return ResultGenerator.genFailResult("删除失败");
+        }
+    }
+
 }

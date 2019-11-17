@@ -1,4 +1,4 @@
-package com.company.project.web;
+package com.company.project.web.login;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -9,19 +9,17 @@ import com.company.project.model.Token;
 import com.company.project.service.WxService;
 import com.company.project.service.StudentidService;
 import com.company.project.common.*;
+import com.company.project.web.other.UserController;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/mini")
@@ -29,6 +27,7 @@ public class WxController {
     private Logger logger = LoggerFactory.getLogger(UserController.class);
     @Autowired
     private WxService WxService;
+    @Resource
     private StudentidService numberService;
 
     /**
@@ -49,11 +48,12 @@ public class WxController {
 
     /**
      * code登录（版本2.0）
+     *
      * @param code
      * @return
      */
     @PostMapping("/login")
-    public Result wxLogin(@RequestParam String code,String number1) throws NullPointerException {
+    public Result wxLogin(@RequestParam String code, String number1, String url, String wxName) throws NullPointerException {
 
         //System.out.println(code+"--------------------");
         String WX_URL = "https://api.weixin.qq.com/sns/jscode2session?" +
@@ -68,7 +68,7 @@ public class WxController {
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         WxUser wx = new WxUser();
-        Studentid num=new Studentid();
+        Studentid num = new Studentid();
         wx.setOpenId((String) jsonObject.get("openid"));
         wx.setToken((String) jsonObject.get("session_key"));
         wx.setLoginTime(df.format(new Date()));
@@ -79,32 +79,44 @@ public class WxController {
         t.setOpenId(wx.getOpenId());
         //用户未注册则插入数据到数据库
         if (WxService.findById(wx.getOpenId()) == null && wx.getOpenId() != null) {
-            if(numberService.findById(num.getStudentid())==null) {
+            if (numberService.findById(num.getStudentid()) == null) {
                 return ResultGenerator.genFailResult("学号不存在");
             }
             num.setOpenid(wx.getOpenId());
-            numberService.save(num);
+            System.out.println(num.getOpenid());
+            numberService.updateOrder(num);
+            wx.setNumber(number1);
+            wx.setUrl(url);//头像
+            wx.setWeixinId(wxName);//微信名
             WxService.save(wx);
             return ResultGenerator.genSuccessResult(t);
         } else if (WxService.findById(wx.getOpenId()) != null) {
-            if(numberService.findById(num.getStudentid())==null) {
+            WxUser wxUser = WxService.findById(wx.getOpenId());
+            if (numberService.findById(num.getStudentid()) == null) {
                 return ResultGenerator.genFailResult("学号不存在");
             }
-            WxUser wxUser = WxService.findById(wx.getOpenId());
-            if(wxUser.getNumber()!=null) {
+            Studentid studentid = numberService.findById(number1);
+            if (!studentid.getOpenid().equals("") && !studentid.getOpenid().equals(wx.getOpenId())) {
                 return ResultGenerator.genFailResult("用户已经绑定学号");
-            }
-            num.setOpenid(wxUser.getOpenId());
-            //WxUser wxUser =new WxUser();
-            t.setToken(wxUser.getToken());
-            //判断令牌失效时间期限为15天
-            System.out.println(TimeDiff.timeDiff(wx.getLoginTime(), wxUser.getLoginTime()) + "-----------");
-            if (TimeDiff.timeDiff(wx.getLoginTime(), wxUser.getLoginTime()) > 15 * 24) {
+            } else if (wxUser.getNumber() != null && !studentid.getOpenid().equals(wx.getOpenId())) {
+                return ResultGenerator.genFailResult("用户已经绑定学号");
+            } else {
+                num.setOpenid(wxUser.getOpenId());
+                numberService.updateOrder(num);
+                wx.setNumber(number1);
+                wx.setUrl(url);//头像
+                wx.setWeixinId(wxName);//微信名
                 WxService.update(wx);
-                t.setToken(wx.getToken());
+                t.setToken(wxUser.getToken());
+                //判断令牌失效时间期限为15天
+                System.out.println(TimeDiff.timeDiff(wx.getLoginTime(), wxUser.getLoginTime()) + "-----------");
+                if (TimeDiff.timeDiff(wx.getLoginTime(), wxUser.getLoginTime()) > 15 * 24) {
+                    WxService.update(wx);
+                    t.setToken(wx.getToken());
+                    return ResultGenerator.genSuccessResult(t);
+                }
                 return ResultGenerator.genSuccessResult(t);
             }
-            return ResultGenerator.genSuccessResult(t);
         }
         return ResultGenerator.genFailResult("登录错误");
     }

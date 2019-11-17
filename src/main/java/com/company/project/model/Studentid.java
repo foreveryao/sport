@@ -4,31 +4,20 @@ import javax.persistence.*;
 
 public class Studentid {
     @Id
-    @Column(name = "studentID")
+    @Column(name = "studentId")
     private String studentid;
 
-    @Column(name = "openID")
+    @Column(name = "openId")
     private String openid;
 
     @Column(name = "Name")
     private String name;
 
-    @Column(name = "class")
-    private String class1;
-
-    public Studentid() {
-
-    }
-
-    public Studentid(String studentid,String openid,String name,String class1) {
-        this.studentid=studentid;
-        this.openid=openid;
-        this.name=name;
-        this.class1=class1;
-    }
+    @Column(name = "className")
+    private String classname;
 
     /**
-     * @return studentID
+     * @return studentId
      */
     public String getStudentid() {
         return studentid;
@@ -42,7 +31,7 @@ public class Studentid {
     }
 
     /**
-     * @return openID
+     * @return openId
      */
     public String getOpenid() {
         return openid;
@@ -70,16 +59,16 @@ public class Studentid {
     }
 
     /**
-     * @return class1
+     * @return className
      */
-    public String getClass1() {
-        return class1;
+    public String getClassname() {
+        return classname;
     }
 
     /**
-     * @param class1
+     * @param classname
      */
-    public void setClass(String class1) {
-        this.class1 = class1;
+    public void setClassname(String classname) {
+        this.classname = classname;
     }
 }

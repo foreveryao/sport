@@ -5,9 +5,16 @@
     <!--
       WARNING - @mbg.generated
     -->
-    <id column="studentID" jdbcType="VARCHAR" property="studentid" />
-    <result column="openID" jdbcType="VARCHAR" property="openid" />
+    <id column="studentId" jdbcType="VARCHAR" property="studentid" />
+    <result column="openId" jdbcType="VARCHAR" property="openid" />
     <result column="Name" jdbcType="VARCHAR" property="name" />
-    <result column="class" jdbcType="VARCHAR" property="class" />
+    <result column="className" jdbcType="VARCHAR" property="classname" />
   </resultMap>
+  <update id="updateByIDSelective" parameterType="com.company.project.dao.StudentidMapper">
+    update studentid
+    <set>
+      openId      = #{openid,jdbcType=VARCHAR}
+    </set>
+    where studentId = #{studentid,jdbcType=VARCHAR}
+  </update>
 </mapper>

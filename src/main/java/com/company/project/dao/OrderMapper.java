@@ -24,7 +24,7 @@ public interface OrderMapper{
     //根据ID更新约场信息（只更新状态值）
     int updateByIDSelectiveOfSate(Order order);
     //根据ID获取该约场信息的状态
-    Integer getStateByID(int orderId);
+    Order getStateByID(int orderId);
     //根据ID获取约场信息时间
     String getTimeById(int orderId);
 }

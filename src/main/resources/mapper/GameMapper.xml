@@ -14,6 +14,7 @@
         <result column="time_to_state" property="timeToState" jdbcType="VARCHAR"/>
         <result column="form_id" property="formId" jdbcType="VARCHAR"/>
         <result column="form2_id" property="form2Id" jdbcType="VARCHAR"/>
+        <result column="remarks" property="remarks" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="game">
@@ -22,21 +23,27 @@
 
     <insert id="insert" parameterType="com.company.project.dao.game.GameMapper">
         insert into game_list
-        (order_id, open_id, weixin_id, weixin2_id, order_state , game_state , myteam_name, team_name, time, form_id , form2_id)
+        (order_id, open_id, weixin_id, weixin2_id, order_state , game_state , myteam_name, team_name, time, form_id ,time_to_state, remarks)
         values (#{orderId,jdbcType=INTEGER}, #{openId,jdbcType=VARCHAR}, #{weiXinId,jdbcType=VARCHAR},
                 #{weiXin2Id,jdbcType=VARCHAR},
                 #{orderState,jdbcType=INTEGER}, #{gameState,jdbcType=VARCHAR},
                 #{myTeamName,jdbcType=VARCHAR},#{teamName,jdbcType=VARCHAR}, 
-                #{time,jdbcType=VARCHAR},#{formId,jdbcType=VARCHAR},
-                #{form2Id,jdbcType=VARCHAR})
+                #{time,jdbcType=VARCHAR},#{formId,jdbcType=VARCHAR},#{time_to_state,jdbcType=TIMESTAMP},#{remarks,jdbcType=VARCHAR})
 
     </insert>
 
-    <delete id="deleteByOrderId" parameterType="java.lang.Integer">
+    <delete id="deleteByPlayerId" parameterType="java.lang.Integer">
         delete
         from game_list
         where order_id = #{orderId,jdbcType=INTEGER}
           and order_state = 0
+    </delete>
+
+    <delete id="deleteByPlayerIds" parameterType="java.lang.Integer">
+        delete
+        from game_list
+        where order_id = #{orderId,jdbcType=INTEGER}
+          and order_state = 5
     </delete>
 
     <select id="selectByID" resultMap="BaseResultMap" parameterType="java.lang.Integer">
@@ -70,7 +77,7 @@
             form2_id        = #{form2Id,jdbcType=VARCHAR},
         where order_id = #{orderId,jdbcType=INTEGER}
     </update>
-<!-- 完成对对方微信，信息状态，对方队伍名和微信Token值的更新，前提是在待邀请状态，应用于同意邀请后的信息更新-->
+    <!-- 完成对对方微信，信息状态，对方队伍名和微信Token值的更新，前提是在待邀请状态，应用于同意邀请后的信息更新-->
     <update id="updateByIDSelective" parameterType="com.company.project.dao.game.GameMapper">
         update game_list
         <set>
@@ -95,11 +102,14 @@
             <if test="token != null">
                 token = #{token,jdbcType=VARCHAR},
             </if>
+            <if test="remarks_other != null">
+                remarks_other = #{remarks_other,jdbcType=VARCHAR},
+            </if>
         </set>
         where order_id = #{orderId,jdbcType=INTEGER}
         and order_state = 0
     </update>
-<!--完成对信息状态和推送值的更新，应用于对方邀请时，信息的更新 -->
+    <!--完成对信息状态和推送值的更新，应用于对方邀请时，信息的更新 -->
     <update id="updateByIDSelectiveOfSate" parameterType="com.company.project.dao.OrderMapper">
         update game_list
         <set>
@@ -107,7 +117,7 @@
                 order_state = #{orderState,jdbcType=INTEGER},
             </if>
             <if test="formId != null">
-                formId = #{formId,jdbcType=VARCHAR},
+                form_id = #{formId,jdbcType=VARCHAR},
             </if>
         </set>
         where order_id = #{orderId,jdbcType=INTEGER}

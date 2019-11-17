@@ -37,6 +37,11 @@ public class GameServiceImpl implements GameService {
         return gameMapper.deleteByPlayerId(orderId);
     }
 
+    @Override
+    public Integer deleteGameOrders(Integer orderId) {
+        return gameMapper.deleteByPlayerIds(orderId);
+    }
+
     public List<Player> getOtherGameOrder() {
         // TODO Auto-generated method stub
         List<Player> res;

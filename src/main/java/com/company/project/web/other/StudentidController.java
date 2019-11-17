@@ -1,4 +1,4 @@
-package com.company.project.web;
+package com.company.project.web.other;
 import com.company.project.core.Result;
 import com.company.project.core.ResultGenerator;
 import com.company.project.model.Studentid;
@@ -14,7 +14,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
-* Created by CodeGenerator on 2019/11/12.
+* Created by CodeGenerator on 2019/11/13.
 */
 @RestController
 @RequestMapping("/studentid")

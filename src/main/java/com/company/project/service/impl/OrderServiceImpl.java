@@ -27,7 +27,7 @@ public class OrderServiceImpl implements OrderService {
         return orderDao.updateByIDSelectiveOfSate(order);
     }
 
-    public Integer getOrderStateById(int orderId) {
+    public Order getOrderStateById(int orderId) {
         // TODO Auto-generated method stub
         return this.orderDao.getStateByID(orderId);
     }
