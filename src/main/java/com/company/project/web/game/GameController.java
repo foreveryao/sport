@@ -243,4 +243,19 @@ public class GameController {
         }
     }
 
+
+    /**
+         * 根据orderId找到该信息
+         *
+         * @param request
+         * @param model
+         * @return
+         */
+        @RequestMapping("findByID")
+        @ResponseBody
+        public Result findByID(HttpServletRequest request, Model model) {
+            int id = Integer.parseInt(request.getParameter("id"));
+            Player result = gameService.selectByID(id);
+            return ResultGenerator.genSuccessResult(result);
+        }
 }
